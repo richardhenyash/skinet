@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using API.Dtos;
 using API.Errors;
+using API.Extensions;
 using Core.Entities.Identity;
 using Core.Interfaces;
 using Infrastructure.Services;
@@ -28,9 +29,9 @@ public class AccountController : BaseApiController
     [HttpGet]
     public async Task<ActionResult<UserDto>> GetCurrentUser()
     {
-        var email = User.FindFirstValue(ClaimTypes.Email);
+        
 
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await _userManager.FindUserByClaimsPrincipleWithAddressAsync(HttpContext.User);
         return new UserDto
         {
             Email = user.Email,
@@ -49,8 +50,7 @@ public class AccountController : BaseApiController
     [HttpGet("address")]
     public async Task<ActionResult<Address>> GetUserAddress()
     {
-        var email = User.FindFirstValue(ClaimTypes.Email);
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = await _userManager.FindUserByClaimsPrincipleWithAddressAsync(HttpContext.User);
         return user.Address;
     }
 
