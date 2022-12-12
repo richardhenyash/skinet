@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { environment } from 'src/environments/environment'
 import { IUser } from '../shared/models/user';
-import * as http from "http";
 import { map } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -29,13 +28,13 @@ export class AccountService {
   }
 
   register(values: any) {
-    return this.http.post(this.baseUrl + 'account/register', values).pipe{
+    return this.http.post(this.baseUrl + 'account/register', values).pipe(
       map((user: IUser) => {
         if (user) {
           localStorage.setItem('token', user.token);
         }
       })
-    }
+    );
   }
 
   logout() {
