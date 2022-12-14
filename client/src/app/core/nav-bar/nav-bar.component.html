@@ -14,7 +14,7 @@
         <a routerLink="account/login" class="btn btn-outline-secondary mr-2">Login</a>
         <a routerLink="account/register" class="btn btn-outline-secondary mr-3">Sign up</a>
       </ng-container>
-      <ng-container *ngIf="(currentUser$ | async).displayName">
+      <ng-container *ngIf="(currentUser$ | async) && (currentUser$ | async).displayName">
         <a href="#">Welcome {{ (currentUser$ | async).displayName }}</a>
       </ng-container>
     </div>

@@ -22,7 +22,7 @@ export class AccountService {
 
   loadCurrentUser(token: string) {
     let headers = new HttpHeaders();
-    headers = headers.set('Authorization', `Bearer $(token)`);
+    headers = headers.set('Authorization', `Bearer ${token}`);
     return this.http.get(this.baseUrl + 'account', {headers}).pipe(
       map((user: IUser) => {
         if (user) {
