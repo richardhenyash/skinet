@@ -9,22 +9,17 @@ import { AccountService } from '../account.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  public loginForm: FormGroup;
-
+  public loginForm = new FormGroup({
+  email: new FormControl('', [Validators.required, Validators.pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')]),
+  password: new FormControl('', Validators.required)
+});
 
   constructor(private accountService: AccountService, private router: Router) { }
 
   ngOnInit(): void {
-    this.createloginForm()
-    console.log(this.loginForm)
+
   }
 
-  createloginForm() {
-    this.loginForm = new FormGroup({
-      email: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required)
-    });
-  }
 
   onSubmit() {
     this.accountService.login(this.loginForm.value).subscribe(() => {
