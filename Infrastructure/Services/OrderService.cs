@@ -6,17 +6,12 @@ namespace Infrastructure.Services;
 
 public class OrderService : IOrderService
 {
-    private readonly IGenericRepository<Order> _orderRepo;
-    private readonly IGenericRepository<DeliveryMethod> _dmRepo;
-    private readonly IGenericRepository<Product> _productRepo;
+    private readonly IUnitOfWork _unitOfwork;
     private readonly IBasketRepository _basketRepo;
 
-    public OrderService(IGenericRepository<Order> orderRepo, IGenericRepository<DeliveryMethod> dmRepo, 
-        IGenericRepository<Product> productRepo, IBasketRepository basketRepo)
+    public OrderService(IUnitOfWork unitOfwork, IBasketRepository basketRepo)
     {
-        _orderRepo = orderRepo;
-        _dmRepo = dmRepo;
-        _productRepo = productRepo;
+        _unitOfwork = unitOfwork;
         _basketRepo = basketRepo;
     }
 
@@ -26,16 +21,19 @@ public class OrderService : IOrderService
         var items = new List<OrderItem>();
         foreach (var item in basket.Items)
         {
-            var productItem = await _productRepo.GetByIdAsync(item.Id);
+            var productItem = await _unitOfwork.Repository<Product>().GetByIdAsync(item.Id);
             var itemOrdered = new ProductItemOrdered(productItem.Id, productItem.Name, productItem.PictureUrl);
             var orderItem = new OrderItem(itemOrdered, productItem.Price, item.Quantity);
             items.Add(orderItem);
         }
 
-        var deliveryMethod = await _dmRepo.GetByIdAsync(deliveryMethodId);
+        var deliveryMethod = await _unitOfwork.Repository<DeliveryMethod>().GetByIdAsync(deliveryMethodId);
         var subtotal = items.Sum(item => item.Price * item.Quantity);
         var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal);
-        // save to db
+        _unitOfwork.Repository<Order>().Add(order);
+        var result = await _unitOfwork.Complete();
+        if (result <= 0) return null;
+        await _basketRepo.DeleteBasketAsync(basketId);
         return order;
     }
 
