@@ -31,4 +31,26 @@ public class OrdersController : BaseApiController
         if (order == null) return BadRequest(new ApiResponse(400, "Problem creating order"));
         return Ok(order);
     }
+
+    [HttpGet]
+    public async Task<ActionResult<IReadOnlyList<Order>>> GetOrderForUser()
+    {
+        var email = HttpContext.User.RetrieveEmailFromPrinciple();
+        var orders = await _orderService.GetOrdersForUserAsync(email);
+        return Ok(orders);
+    }
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Order>> GetOrderByIdForUser(int id)
+    {
+        var email = HttpContext.User.RetrieveEmailFromPrinciple();
+        var order = await _orderService.GetOrderByIdAsync(id, email);
+        if (order == null) return NotFound(new ApiResponse(404));
+        return order;
+    }
+
+    [HttpGet("deliveryMethods")]
+    public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliverMethods()
+    {
+        return Ok(await _orderService.GetDeliveryMethodsAsync());
+    }
 }
