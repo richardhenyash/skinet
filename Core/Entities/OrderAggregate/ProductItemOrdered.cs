@@ -9,12 +9,12 @@ public class ProductItemOrdered
 
     public ProductItemOrdered(int productItemId, string productName, string pictureUrl)
     {
-        this.productItemId = productItemId;
-        this.productName = productName;
-        this.pictureUrl = pictureUrl;
+        this.ProductItemId = productItemId;
+        this.ProductName = productName;
+        this.PictureUrl = pictureUrl;
     }
 
-    public int productItemId { get; set; }
-    public string productName { get; set; }
-    public string pictureUrl { get; set; }
+    public int ProductItemId { get; set; }
+    public string ProductName { get; set; }
+    public string PictureUrl { get; set; }
 }

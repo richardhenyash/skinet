@@ -230,14 +230,14 @@ namespace Infrastructure.Data.Migrations
                             b1.Property<int>("OrderItemId")
                                 .HasColumnType("INTEGER");
 
-                            b1.Property<string>("pictureUrl")
+                            b1.Property<string>("PictureUrl")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 
-                            b1.Property<int>("productItemId")
+                            b1.Property<int>("ProductItemId")
                                 .HasColumnType("INTEGER");
 
-                            b1.Property<string>("productName")
+                            b1.Property<string>("ProductName")
                                 .IsRequired()
                                 .HasColumnType("TEXT");
 

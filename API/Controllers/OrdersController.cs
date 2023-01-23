@@ -31,14 +31,15 @@ public class OrdersController : BaseApiController
         if (order == null) return BadRequest(new ApiResponse(400, "Problem creating order"));
         return Ok(order);
     }
-
+    
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<OrderDto>>> GetOrdersForUser()
+    public async Task<ActionResult<IReadOnlyList<OrderToReturnDto>>> GetOrdersForUser()
     {
         var email = HttpContext.User.RetrieveEmailFromPrinciple();
         var orders = await _orderService.GetOrdersForUserAsync(email);
         return Ok(_mapper.Map<IReadOnlyList<Order>, IReadOnlyList<OrderToReturnDto>>(orders));
     }
+    
     [HttpGet("{id}")]
     public async Task<ActionResult<OrderToReturnDto>> GetOrderByIdForUser(int id)
     {
