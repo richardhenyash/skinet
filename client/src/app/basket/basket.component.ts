@@ -9,24 +9,16 @@ import { BasketService } from './basket.service';
   templateUrl: './basket.component.html',
   styleUrls: ['./basket.component.scss']
 })
-export class BasketComponent implements OnInit {
-  basket$: Observable<IBasket>;
-  
 
-  constructor(private basketService: BasketService) { }
+export class BasketComponent {
 
-  ngOnInit() {
-    this.basket$ = this.basketService.basket$
+  constructor(public basketService: BasketService) {}
+
+  incrementQuantity(item: IBasketItem) {
+    this.basketService.addItemToBasket(item);
   }
 
-  removeBasketItem(item: IBasketItem) {
-    this.basketService.removeItemFromBasket(item);
+  removeItem(event: {id: number, quantity: number}) {
+    this.basketService.removeItemFromBasket(event.id, event.quantity);
   }
-  incrementItemQuantity(item: IBasketItem) {
-    this.basketService.incrementItemQuantity(item);
-  }
-  decrementItemQuantity(item: IBasketItem) {
-    this.basketService.decrementItemQuantity(item);
-  }
-
 }
