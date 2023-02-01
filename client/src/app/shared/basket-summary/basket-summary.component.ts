@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IBasketItem } from "../models/basket";
 import {BasketService} from "../../basket/basket.service";
 
@@ -10,6 +10,7 @@ import {BasketService} from "../../basket/basket.service";
 export class BasketSummaryComponent implements OnInit {
   @Output() addItem = new EventEmitter<IBasketItem>();
   @Output() removeItem = new EventEmitter<{ id: number, quantity: number }>();
+  @Input() isBasket = true;
 
   constructor(public basketService: BasketService){}
 
