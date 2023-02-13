@@ -40,7 +40,6 @@ export class BasketService {
       this.basketSource.next(response);
       this.calculateTotals();
     }, error => {
-      console.log(error)
     })
   }
 
@@ -50,7 +49,6 @@ export class BasketService {
 
   addItemToBasket(item: IProduct | IBasketItem, quantity = 1) {
     if (this.isProduct(item)) item = this.mapProductItemToBasketItem(item);
-    console.log(item);
     const basket = this.getCurrentBasketValue() ?? this.createBasket();
     basket.items = this.addOrUpdateItem(basket.items, item, quantity);
     this.setBasket(basket);
